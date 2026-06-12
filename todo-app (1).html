@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Taskflow — To-Do</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Sora:wght@400;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Sora:wght@400;600;700&family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Caveat:wght@400..700&family=Fira+Code:wght@300..700&display=swap" rel="stylesheet" />
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -58,7 +58,7 @@
 
   .wrapper {
     width: 100%;
-    max-width: 620px;
+    max-width: 700px;
     position: relative;
     z-index: 1;
   }
@@ -490,6 +490,627 @@
     .task-actions { opacity: 1; }
     .add-card { padding: 12px; }
   }
+
+  /* ── Tab Views Navigation ── */
+  .nav-tabs {
+    display: flex;
+    background: var(--surface2);
+    padding: 4px;
+    border-radius: var(--radius);
+    margin-bottom: 24px;
+    border: 1px solid var(--border);
+    gap: 2px;
+  }
+  .nav-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border: none;
+    background: transparent;
+    color: var(--text2);
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 13px;
+    cursor: pointer;
+    border-radius: calc(var(--radius) - 4px);
+    transition: all var(--transition);
+  }
+  .nav-tab:hover {
+    color: var(--text);
+    background: rgba(0,0,0,0.03);
+  }
+  .nav-tab.active {
+    background: var(--surface);
+    color: var(--accent);
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  }
+  .nav-tab svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2.2px;
+  }
+
+  .tab-view {
+    display: none;
+  }
+  .tab-view.active {
+    display: block;
+    animation: fadeIn 0.25s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Tab 2: Habit Tracker ── */
+  .habit-input-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 22px;
+    transition: border-color var(--transition), box-shadow var(--transition);
+  }
+  .habit-input-card:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-glow);
+  }
+  .habit-inputs-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .habit-inputs-row input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-size: 15px;
+    font-family: var(--font-body);
+    font-weight: 400;
+    border-bottom: 1.5px solid transparent;
+    padding: 4px 0;
+    transition: border-bottom var(--transition);
+  }
+  .habit-inputs-row input:focus {
+    border-bottom-color: var(--accent);
+  }
+  .custom-select {
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+  }
+  .custom-select:focus {
+    border-color: var(--accent);
+  }
+  .habits-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .habit-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: all var(--transition);
+  }
+  .habit-item:hover {
+    border-color: var(--border2);
+    transform: translateY(-2px);
+  }
+  .habit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .habit-title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .habit-icon {
+    font-size: 20px;
+  }
+  .habit-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .habit-streak-badge {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--amber);
+    background: rgba(192, 122, 26, 0.08);
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .habit-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+  .habit-tick-btn {
+    flex: 1;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border2);
+    background: transparent;
+    color: var(--text2);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+  .habit-tick-btn:hover {
+    border-color: var(--green);
+    color: var(--green);
+    background: var(--green-bg);
+  }
+  .habit-tick-btn.done {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+  }
+  .habit-tick-btn.done:hover {
+    background: #257048;
+    border-color: #257048;
+  }
+  
+  .weekly-dots {
+    display: flex;
+    justify-content: space-between;
+    margin: 4px 0;
+    background: var(--surface2);
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+  }
+  .day-dot-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .day-dot-wrap.today .day-lbl {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .day-lbl {
+    font-size: 10px;
+    color: var(--text3);
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  .day-dot {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: transparent;
+    transition: all var(--transition);
+    user-select: none;
+  }
+  @keyframes checkPop {
+    0% { transform: scale(0.8); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  .day-dot.completed {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+    font-weight: bold;
+    animation: checkPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+
+  /* ── Tab 3: Aesthetic Journal ── */
+  .journal-editor-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: all var(--transition);
+    margin-bottom: 28px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.01);
+  }
+  .journal-title-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border2);
+    color: inherit;
+    font-family: inherit;
+    font-size: 20px;
+    font-weight: 700;
+    outline: none;
+    padding-bottom: 6px;
+  }
+  .journal-textarea {
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 140px;
+    outline: none;
+    resize: vertical;
+  }
+  .journal-tools {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    border-top: 1px dashed var(--border2);
+    padding-top: 16px;
+  }
+  .tool-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .tool-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text2);
+    letter-spacing: 0.05em;
+  }
+  .font-buttons, .mood-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .font-btn {
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border2);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+  .font-btn.active, .font-btn:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  .theme-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  .theme-dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+  .theme-dot.active {
+    border-color: var(--accent);
+    transform: scale(1.1);
+  }
+  .theme-dot.linen { background: #FAF7F2; border: 1.5px solid #E6DFD3; }
+  .theme-dot.sage { background: #F2F5F1; border: 1.5px solid #DEE3DC; }
+  .theme-dot.lavender { background: #F5F2F7; border: 1.5px solid #E6DFEB; }
+  .theme-dot.midnight { background: #1C1E22; border: 1.5px solid #2F333B; }
+  .theme-dot.sunset { background: linear-gradient(135deg, #FFF0EC, #FFF6E5); border: 1.5px solid #F7E3DC; }
+
+  .mood-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border2);
+    background: var(--surface);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition);
+  }
+  .mood-btn.active, .mood-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-glow);
+    transform: scale(1.1);
+  }
+
+  .save-journal-btn {
+    height: 40px;
+    background: var(--accent);
+    border: none;
+    border-radius: var(--radius-sm);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all var(--transition);
+  }
+  .save-journal-btn:hover { background: var(--accent2); }
+
+  .journal-timeline {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 580px) {
+    .journal-timeline {
+      grid-template-columns: 1fr;
+    }
+  }
+  .journal-card {
+    border-radius: var(--radius);
+    padding: 20px;
+    border: 1px solid;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    transition: transform var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+  .journal-card:hover {
+    transform: translateY(-3px);
+  }
+  .journal-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .journal-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-right: 20px;
+  }
+  .journal-card-meta {
+    font-size: 11px;
+    opacity: 0.7;
+    margin-top: 3px;
+  }
+  .journal-card-body {
+    font-size: 13px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 120px;
+    overflow-y: auto;
+  }
+  .journal-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    padding-top: 10px;
+    margin-top: auto;
+  }
+  .journal-card-mood {
+    font-size: 14px;
+    background: rgba(0,0,0,0.04);
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+  }
+
+  /* Journal font styles */
+  .jfont-sans { font-family: var(--font-body) !important; }
+  .jfont-serif { font-family: 'Playfair Display', Georgia, serif !important; }
+  .jfont-hand { font-family: 'Caveat', cursive, sans-serif !important; font-size: 18px !important; }
+  .jfont-mono { font-family: 'Fira Code', monospace !important; font-size: 13px !important; }
+
+  /* Journal paper themes */
+  .jtheme-linen { background: #FAF7F2 !important; color: #433D35 !important; border-color: #E6DFD3 !important; }
+  .jtheme-sage { background: #F2F5F1 !important; color: #354338 !important; border-color: #DEE3DC !important; }
+  .jtheme-lavender { background: #F5F2F7 !important; color: #3D3543 !important; border-color: #E6DFEB !important; }
+  .jtheme-midnight { background: #1C1E22 !important; color: #E3E4E6 !important; border-color: #2F333B !important; }
+  .jtheme-sunset { background: linear-gradient(135deg, #FFF0EC, #FFF6E5) !important; color: #5C3A35 !important; border-color: #F7E3DC !important; }
+
+  /* ── Tab 4: Long-Term Goals ── */
+  .goal-input-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 24px;
+    transition: border-color var(--transition), box-shadow var(--transition);
+  }
+  .goal-input-card:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-glow);
+  }
+  .goal-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .field-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text2);
+    letter-spacing: 0.05em;
+  }
+  .goal-field-group input[type="text"], .goal-field-group textarea, .date-picker-input {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    outline: none;
+    transition: border-color var(--transition);
+  }
+  .goal-field-group input[type="text"]:focus, .goal-field-group textarea:focus, .date-picker-input:focus {
+    border-color: var(--accent);
+  }
+  .goal-field-group textarea {
+    min-height: 60px;
+    resize: vertical;
+  }
+  .goal-checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 2px 0;
+  }
+  .checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text2);
+    user-select: none;
+  }
+  .checkbox-container input {
+    accent-color: var(--accent);
+    width: 16px;
+    height: 16px;
+  }
+  .goals-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .goal-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: all var(--transition);
+  }
+  .goal-card:hover {
+    border-color: var(--border2);
+  }
+  .goal-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .goal-title-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .goal-title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .goal-days-left {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-glow);
+    padding: 3px 8px;
+    border-radius: var(--radius-pill);
+    width: fit-content;
+  }
+  .goal-progress-section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .goal-progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text2);
+  }
+  .goal-progress-bar {
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .goal-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--green));
+    transition: width 0.3s ease;
+  }
+  .goal-milestones {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-top: 1px dashed var(--border2);
+    padding-top: 12px;
+  }
+  .goal-milestone-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+  }
+  .goal-milestone-item.done span {
+    text-decoration: line-through;
+    color: var(--text3);
+  }
+  .goal-roadmap-section {
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .roadmap-title {
+    font-weight: 700;
+    color: var(--text);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .roadmap-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-left: 14px;
+    margin: 0;
+  }
+  .roadmap-item {
+    color: var(--text2);
+  }
 </style>
 </head>
 <body>
@@ -505,84 +1126,248 @@
     <div class="date-str" id="date-str"></div>
   </header>
 
-  <!-- Stats -->
-  <div class="stats">
-    <div class="chip all"><span class="dot"></span><span id="s-total">0</span> total</div>
-    <div class="chip active"><span class="dot"></span><span id="s-active">0</span> active</div>
-    <div class="chip done"><span class="dot"></span><span id="s-done">0</span> done</div>
-  </div>
-
-  <!-- Progress -->
-  <div class="progress-wrap">
-    <span class="progress-label">Progress</span>
-    <div class="progress-bar-track">
-      <div class="progress-bar-fill" id="prog-fill" style="width:0%"></div>
-    </div>
-    <span class="progress-pct" id="prog-pct">0%</span>
-  </div>
-
-  <!-- Instructions -->
-  <div class="instructions open" id="instructions">
-    <div class="instructions-toggle" onclick="document.getElementById('instructions').classList.toggle('open')">
-      <div class="instructions-toggle-left">
-        <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><line x1="8" y1="7" x2="8" y2="11"/><circle cx="8" cy="5" r="0.5" fill="currentColor" stroke="none"/></svg>
-        <span class="instructions-title">How to use Taskflow</span>
-      </div>
-      <svg class="instructions-chevron" viewBox="0 0 16 16"><polyline points="4,6 8,10 12,6"/></svg>
-    </div>
-    <div class="instructions-body">
-      <div class="instr-steps">
-        <div class="instr-step">
-          <div class="instr-num">1</div>
-          <div class="instr-text"><strong>Add a task</strong> — Type your task in the text box above the list, then click <strong>Add task</strong> or press <kbd>Enter</kbd> on your keyboard.</div>
-        </div>
-        <div class="instr-step">
-          <div class="instr-num">2</div>
-          <div class="instr-text"><strong>Mark as done</strong> — Click the checkbox on the left of any task, or click the task text itself, to toggle it complete. Click again to mark it undone.</div>
-        </div>
-        <div class="instr-step">
-          <div class="instr-num">3</div>
-          <div class="instr-text"><strong>Delete a task</strong> — Hover over a task to reveal the trash icon on the right, then click it to remove that task permanently.</div>
-        </div>
-        <div class="instr-step">
-          <div class="instr-num">4</div>
-          <div class="instr-text"><strong>Clear all done tasks</strong> — Use the <strong>Clear completed</strong> button at the bottom to delete every finished task at once.</div>
-        </div>
-        <div class="instr-step">
-          <div class="instr-num">5</div>
-          <div class="instr-text"><strong>Filter your list</strong> — Use the <strong>All / Active / Completed</strong> buttons to focus on specific tasks.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Add task -->
-  <div class="add-card">
-    <input type="text" id="task-input" placeholder="What needs to be done?" maxlength="140" autocomplete="off" />
-    <button class="add-btn" id="add-btn">
-      <svg viewBox="0 0 16 16"><line x1="8" y1="2" x2="8" y2="14"/><line x1="2" y1="8" x2="14" y2="8"/></svg>
-      Add task
+  <!-- Segmented Pill Tab Navigation -->
+  <nav class="nav-tabs">
+    <button class="nav-tab active" data-tab="tasks">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Tasks
     </button>
-  </div>
-
-  <!-- Filters -->
-  <div class="filter-bar">
-    <button class="filter-btn active" data-filter="all">All</button>
-    <button class="filter-btn" data-filter="active">Active</button>
-    <button class="filter-btn" data-filter="done">Completed</button>
-  </div>
-
-  <!-- Task list -->
-  <div class="section-label" id="section-lbl">All tasks</div>
-  <div class="task-list" id="task-list"></div>
-
-  <!-- Footer -->
-  <div class="footer-row">
-    <span class="footer-note" id="footer-note"></span>
-    <button class="clear-btn" id="clear-btn" disabled>
-      <svg viewBox="0 0 16 16"><polyline points="3,4 13,4"/><path d="M5,4V3a1,1,0,0,1,1-1h4a1,1,0,0,1,1,1V4"/><path d="M6,8v4m4-4v4"/><path d="M4,4l.8,9a1,1,0,0,0,1,.9h4.4a1,1,0,0,0,1-.9L12,4"/></svg>
-      Clear completed
+    <button class="nav-tab" data-tab="habits">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Habits
     </button>
+    <button class="nav-tab" data-tab="journal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      Journal
+    </button>
+    <button class="nav-tab" data-tab="goals">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+      Goals
+    </button>
+  </nav>
+
+  <!-- VIEW 1: TASKS (Original Todo Application) -->
+  <div id="view-tasks" class="tab-view active">
+    <!-- Stats -->
+    <div class="stats">
+      <div class="chip all"><span class="dot"></span><span id="s-total">0</span> total</div>
+      <div class="chip active"><span class="dot"></span><span id="s-active">0</span> active</div>
+      <div class="chip done"><span class="dot"></span><span id="s-done">0</span> done</div>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-wrap">
+      <span class="progress-label">Task Progress</span>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="prog-fill" style="width:0%"></div>
+      </div>
+      <span class="progress-pct" id="prog-pct">0%</span>
+    </div>
+
+    <!-- Instructions -->
+    <div class="instructions" id="instructions">
+      <div class="instructions-toggle" onclick="document.getElementById('instructions').classList.toggle('open')">
+        <div class="instructions-toggle-left">
+          <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><line x1="8" y1="7" x2="8" y2="11"/><circle cx="8" cy="5" r="0.5" fill="currentColor" stroke="none"/></svg>
+          <span class="instructions-title">How to use Taskflow</span>
+        </div>
+        <svg class="instructions-chevron" viewBox="0 0 16 16"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="instructions-body">
+        <div class="instr-steps">
+          <div class="instr-step">
+            <div class="instr-num">1</div>
+            <div class="instr-text"><strong>Add a task</strong> — Type your task in the text box above the list, then click <strong>Add task</strong> or press <kbd>Enter</kbd> on your keyboard.</div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">2</div>
+            <div class="instr-text"><strong>Mark as done</strong> — Click the checkbox on the left of any task, or click the task text itself, to toggle it complete. Click again to mark it undone.</div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">3</div>
+            <div class="instr-text"><strong>Delete a task</strong> — Hover over a task to reveal the trash icon on the right, then click it to remove that task permanently.</div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">4</div>
+            <div class="instr-text"><strong>Clear all done tasks</strong> — Use the <strong>Clear completed</strong> button at the bottom to delete every finished task at once.</div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">5</div>
+            <div class="instr-text"><strong>Filter your list</strong> — Use the <strong>All / Active / Completed</strong> buttons to focus on specific tasks.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add task -->
+    <div class="add-card">
+      <input type="text" id="task-input" placeholder="What needs to be done?" maxlength="140" autocomplete="off" />
+      <button class="add-btn" id="add-btn">
+        <svg viewBox="0 0 16 16"><line x1="8" y1="2" x2="8" y2="14"/><line x1="2" y1="8" x2="14" y2="8"/></svg>
+        Add task
+      </button>
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="active">Active</button>
+      <button class="filter-btn" data-filter="done">Completed</button>
+    </div>
+
+    <!-- Task list -->
+    <div class="section-label" id="section-lbl">All tasks</div>
+    <div class="task-list" id="task-list"></div>
+
+    <!-- Footer -->
+    <div class="footer-row">
+      <span class="footer-note" id="footer-note"></span>
+      <button class="clear-btn" id="clear-btn" disabled>
+        <svg viewBox="0 0 16 16"><polyline points="3,4 13,4"/><path d="M5,4V3a1,1,0,0,1,1-1h4a1,1,0,0,1,1,1V4"/><path d="M6,8v4m4-4v4"/><path d="M4,4l.8,9a1,1,0,0,0,1,.9h4.4a1,1,0,0,0,1-.9L12,4"/></svg>
+        Clear completed
+      </button>
+    </div>
+  </div>
+
+  <!-- VIEW 2: DAILY HABITS & STREAK TRACKER -->
+  <div id="view-habits" class="tab-view">
+    <!-- Stats -->
+    <div class="stats">
+      <div class="chip all"><span class="dot"></span><span id="h-total">0</span> habits</div>
+      <div class="chip done"><span class="dot"></span><span id="h-completed">0</span> completed today</div>
+      <div class="chip active" style="color: var(--amber);"><span class="dot" style="background: var(--amber);"></span>🔥 <span id="h-perfect-streak">0</span> day streak</div>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-wrap">
+      <span class="progress-label">Habit Progress</span>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="h-prog-fill" style="width:0%"></div>
+      </div>
+      <span class="progress-pct" id="h-prog-pct">0%</span>
+    </div>
+
+    <!-- Add Habit Card -->
+    <div class="habit-input-card">
+      <div class="habit-inputs-row">
+        <select id="habit-icon-select" class="custom-select">
+          <option value="💧">💧 Hydration</option>
+          <option value="🏋️">🏋️ Exercise</option>
+          <option value="🧘">🧘 Mindfulness</option>
+          <option value="🍎">🍎 Nutrition</option>
+          <option value="📖">📖 Reading</option>
+          <option value="💤">💤 Sleep</option>
+          <option value="✨">✨ Custom</option>
+        </select>
+        <input type="text" id="habit-name-input" placeholder="Create a new daily habit checklist..." maxlength="80" autocomplete="off" />
+      </div>
+      <button class="add-btn" id="add-habit-btn" onclick="addHabit()" style="width: 100%; justify-content: center;">
+        <svg viewBox="0 0 16 16"><line x1="8" y1="2" x2="8" y2="14"/><line x1="2" y1="8" x2="14" y2="8"/></svg>
+        Add daily habit
+      </button>
+    </div>
+
+    <!-- Habits List -->
+    <div class="section-label">My Habits checklist</div>
+    <div class="habits-list" id="habits-list"></div>
+  </div>
+
+  <!-- VIEW 3: AESTHETIC JOURNAL DIARY -->
+  <div id="view-journal" class="tab-view">
+    <div class="journal-editor-card jtheme-linen jfont-sans" id="journal-editor-preview">
+      <input type="text" id="journal-title" placeholder="Title your reflections..." class="journal-title-input" />
+      <textarea id="journal-body" placeholder="Write your thoughts for today here..." class="journal-textarea"></textarea>
+      
+      <div class="journal-tools">
+        <!-- Font Selection -->
+        <div class="tool-group">
+          <label class="tool-label">Font Face</label>
+          <div class="font-buttons">
+            <button type="button" class="font-btn active" data-font="sans" style="font-family:'Inter'">Clean</button>
+            <button type="button" class="font-btn" data-font="serif" style="font-family:'Playfair Display', serif">Classic</button>
+            <button type="button" class="font-btn" data-font="hand" style="font-family:'Caveat', cursive">Cozy</button>
+            <button type="button" class="font-btn" data-font="mono" style="font-family:'Fira Code', monospace">Dev</button>
+          </div>
+        </div>
+        
+        <!-- Theme Selection -->
+        <div class="tool-group">
+          <label class="tool-label">Paper Design Theme</label>
+          <div class="theme-buttons">
+            <button type="button" class="theme-dot active linen" data-theme="linen" title="Warm Linen"></button>
+            <button type="button" class="theme-dot sage" data-theme="sage" title="Sage Botanical"></button>
+            <button type="button" class="theme-dot lavender" data-theme="lavender" title="Lavender Mist"></button>
+            <button type="button" class="theme-dot midnight" data-theme="midnight" title="Midnight Velvet"></button>
+            <button type="button" class="theme-dot sunset" data-theme="sunset" title="Sunset Glow"></button>
+          </div>
+        </div>
+
+        <!-- Mood Selector -->
+        <div class="tool-group">
+          <label class="tool-label">Daily Mood</label>
+          <div class="mood-buttons">
+            <button type="button" class="mood-btn" data-mood="😢">😢</button>
+            <button type="button" class="mood-btn" data-mood="😐">😐</button>
+            <button type="button" class="mood-btn active" data-mood="🙂">🙂</button>
+            <button type="button" class="mood-btn" data-mood="😊">😊</button>
+            <button type="button" class="mood-btn" data-mood="🥰">🥰</button>
+          </div>
+        </div>
+      </div>
+      
+      <button class="save-journal-btn" onclick="saveJournalEntry()">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Save Journal Entry
+      </button>
+    </div>
+
+    <!-- Timeline Gallery -->
+    <div class="section-label">Aesthetic Journal entries</div>
+    <div class="journal-timeline" id="journal-timeline"></div>
+  </div>
+
+  <!-- VIEW 4: LONG-TERM GOALS -->
+  <div id="view-goals" class="tab-view">
+    <!-- Goal Input Form -->
+    <div class="goal-input-card">
+      <h3 style="font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px;">Establish a Long-Term Goal</h3>
+      
+      <div class="goal-field-group">
+        <label class="field-label">Goal Target (e.g. Muscle Gain, Weight Loss 5kg)</label>
+        <input type="text" id="goal-title" placeholder="Write your long-term goal objective..." maxlength="80" autocomplete="off" />
+      </div>
+
+      <div class="goal-field-group">
+        <label class="field-label">Target Completion Date</label>
+        <input type="date" id="goal-date" class="date-picker-input" />
+      </div>
+
+      <div class="goal-field-group">
+        <label class="field-label">Daily Action Roadmap (One action per line)</label>
+        <textarea id="goal-roadmap" placeholder="What should you do daily to achieve this goal?&#10;e.g. Strength training for 45 min&#10;e.g. Eat 120g high quality protein"></textarea>
+      </div>
+
+      <div class="goal-field-group">
+        <label class="field-label">Goal Milestones Checkpoints (One milestone per line)</label>
+        <textarea id="goal-milestones-input" placeholder="Break down your goal into key milestones...&#10;e.g. Squat 80kg benchpress&#10;e.g. Build 2kg lean mass"></textarea>
+      </div>
+
+      <div class="goal-checkbox-row">
+        <label class="checkbox-container">
+          <input type="checkbox" id="goal-autolink" checked />
+          <span class="checkbox-text" style="font-size:12px;">Auto-add daily actions to my Daily Habits checklist</span>
+        </label>
+      </div>
+
+      <button class="add-btn" onclick="addLongTermGoal()" style="width: 100%; justify-content: center; margin-top: 4px;">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        Launch Long-Term Goal
+      </button>
+    </div>
+
+    <!-- Active Goals List -->
+    <div class="section-label">Active Long-Term Goals</div>
+    <div class="goals-list" id="goals-list"></div>
   </div>
 
 </div>
@@ -590,26 +1375,244 @@
 <script>
   // ── State ──
   let tasks = [];
+  let habits = [];
+  let journal = [];
+  let goals = [];
+  
   let filter = 'all';
   let nid = 1;
 
-  const seed = [
-    { text: 'Review project proposal', done: false },
-    { text: 'Schedule team standup', done: true  },
-    { text: 'Update weekly report', done: false },
-  ];
-  seed.forEach(s => tasks.push({ id: nid++, text: s.text, done: s.done }));
-
-  // ── Date ──
-  document.getElementById('date-str').textContent =
-    new Date().toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  let selectedJournalFont = 'sans';
+  let selectedJournalTheme = 'linen';
+  let selectedJournalMood = '🙂';
 
   // ── Icons ──
   const trashIcon = `<svg viewBox="0 0 16 16"><polyline points="3,4 13,4"/><path d="M5,4V3a1,1,0,0,1,1-1h4a1,1,0,0,1,1,1V4"/><path d="M6,8v4m4-4v4"/><path d="M4,4l.8,9a1,1,0,0,0,1,.9h4.4a1,1,0,0,0,1-.9L12,4"/></svg>`;
   const checkIcon = `<svg viewBox="0 0 13 13"><polyline points="2,7 5,10 11,3"/></svg>`;
 
-  // ── Render ──
-  function render() {
+  // ── Date Helpers ──
+  document.getElementById('date-str').textContent =
+    new Date().toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+
+  const getLocalDateStr = (d = new Date()) => {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const r = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${r}`;
+  };
+
+  const getYesterdayDateStr = () => {
+    const d = new Date();
+    d.setDate(d.getDate() - 1);
+    return getLocalDateStr(d);
+  };
+
+  const getFutureDateStr = (days) => {
+    const d = new Date();
+    d.setDate(d.getDate() + days);
+    return d.toISOString().split('T')[0];
+  };
+
+  const getDaysLeftStr = (targetDateStr) => {
+    if (!targetDateStr) return 'No target date';
+    const target = new Date(targetDateStr + 'T00:00:00');
+    const today = new Date();
+    target.setHours(0,0,0,0);
+    today.setHours(0,0,0,0);
+    
+    const diffTime = target - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays < 0) {
+      return 'Overdue by ' + Math.abs(diffDays) + ' days';
+    } else if (diffDays === 0) {
+      return 'Target is today!';
+    } else if (diffDays === 1) {
+      return '1 day left';
+    } else {
+      return `${diffDays} days left`;
+    }
+  };
+
+  // ── Streak Calculation Engine ──
+  function getHabitStreak(history) {
+    if (!history || history.length === 0) return { current: 0, max: 0 };
+    
+    const today = getLocalDateStr();
+    const yesterday = getYesterdayDateStr();
+    
+    const datesSet = new Set(history);
+    let currentStreak = 0;
+    let checkDate = new Date();
+    
+    if (datesSet.has(today)) {
+      currentStreak = 1;
+      checkDate.setDate(checkDate.getDate() - 1);
+    } else if (datesSet.has(yesterday)) {
+      currentStreak = 1;
+      checkDate.setDate(checkDate.getDate() - 2);
+    } else {
+      currentStreak = 0;
+    }
+    
+    if (currentStreak > 0) {
+      while (true) {
+        const checkStr = getLocalDateStr(checkDate);
+        if (datesSet.has(checkStr)) {
+          currentStreak++;
+          checkDate.setDate(checkDate.getDate() - 1);
+        } else {
+          break;
+        }
+      }
+    }
+    
+    const sortedDates = Array.from(datesSet).sort();
+    let maxStreak = 0;
+    let tempStreak = 0;
+    let prevTime = null;
+    
+    for (const dateStr of sortedDates) {
+      const currTime = new Date(dateStr + 'T00:00:00');
+      if (prevTime === null) {
+        tempStreak = 1;
+      } else {
+        const diffDays = Math.round((currTime - prevTime) / (1000 * 60 * 60 * 24));
+        if (diffDays === 1) {
+          tempStreak++;
+        } else if (diffDays > 1) {
+          tempStreak = 1;
+        }
+      }
+      if (tempStreak > maxStreak) maxStreak = tempStreak;
+      prevTime = currTime;
+    }
+    
+    return { current: currentStreak, max: Math.max(maxStreak, currentStreak) };
+  }
+
+  function getPerfectDaysStreak() {
+    if (habits.length === 0) return { current: 0, max: 0 };
+    
+    const allDates = new Set();
+    habits.forEach(h => {
+      h.history.forEach(d => allDates.add(d));
+    });
+    
+    const perfectDates = [];
+    allDates.forEach(dateStr => {
+      const allDone = habits.every(h => h.history.includes(dateStr));
+      if (allDone) {
+        perfectDates.push(dateStr);
+      }
+    });
+    
+    return getHabitStreak(perfectDates);
+  }
+
+  function getWeeklyProgressHtml(history) {
+    const datesSet = new Set(history);
+    const result = [];
+    const today = new Date();
+    
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(today.getDate() - i);
+      const dateStr = getLocalDateStr(d);
+      const dayName = d.toLocaleDateString('en-US', { weekday: 'narrow' });
+      const isCompleted = datesSet.has(dateStr);
+      const activeClass = isCompleted ? 'completed' : '';
+      const isToday = i === 0 ? 'today' : '';
+      
+      result.push(`
+        <div class="day-dot-wrap ${isToday}">
+          <span class="day-lbl">${dayName}</span>
+          <div class="day-dot ${activeClass}" title="${dateStr}">
+            ${isCompleted ? '✓' : ''}
+          </div>
+        </div>
+      `);
+    }
+    return `<div class="weekly-dots">${result.join('')}</div>`;
+  }
+
+  // ── Local Storage Data Core ──
+  function loadState() {
+    const storedTasks = localStorage.getItem('taskflow_tasks');
+    if (storedTasks) {
+      tasks = JSON.parse(storedTasks);
+      if (tasks.length > 0) {
+        nid = Math.max(...tasks.map(t => t.id)) + 1;
+      }
+    } else {
+      const seed = [
+        { text: 'Review project proposal', done: false },
+        { text: 'Schedule team standup', done: true  },
+        { text: 'Update weekly report', done: false },
+      ];
+      seed.forEach(s => tasks.push({ id: nid++, text: s.text, done: s.done }));
+      saveTasks();
+    }
+
+    const storedHabits = localStorage.getItem('taskflow_habits');
+    if (storedHabits) {
+      habits = JSON.parse(storedHabits);
+    } else {
+      habits = [
+        { id: 101, text: 'Drink 8 glasses of water', history: [getLocalDateStr()], createdAt: new Date().toISOString(), icon: '💧' },
+        { id: 102, text: '30 min Strength Training', history: [], createdAt: new Date().toISOString(), icon: '🏋️' },
+        { id: 103, text: 'Read 10 pages of a book', history: [], createdAt: new Date().toISOString(), icon: '📖' }
+      ];
+      saveHabits();
+    }
+
+    const storedJournal = localStorage.getItem('taskflow_journal');
+    if (storedJournal) {
+      journal = JSON.parse(storedJournal);
+    } else {
+      journal = [
+        {
+          id: 201,
+          title: 'Welcome to your aesthetic diary',
+          body: 'This journaling space is designed to help you capture your thoughts and daily reflections. Feel free to explore different fonts and paper designs to match your vibe today!',
+          date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+          font: 'serif',
+          theme: 'linen',
+          mood: '🥰'
+        }
+      ];
+      saveJournal();
+    }
+
+    const storedGoals = localStorage.getItem('taskflow_goals');
+    if (storedGoals) {
+      goals = JSON.parse(storedGoals);
+    } else {
+      goals = [
+        {
+          id: 301,
+          title: 'Establish Workout Routines',
+          targetDate: getFutureDateStr(60),
+          milestones: [
+            { id: 1, text: 'Perform 10 full pull-ups', done: false },
+            { id: 2, text: 'Maintain exercise splits for 3 weeks', done: true },
+            { id: 3, text: 'Reach target strength bench press', done: false }
+          ],
+          roadmap: ['Strength training 4x a week', 'Drink 3L of water daily', 'Consume protein goals'],
+          autoLinked: true
+        }
+      ];
+      saveGoals();
+    }
+  }
+
+  function saveTasks() { localStorage.setItem('taskflow_tasks', JSON.stringify(tasks)); }
+  function saveHabits() { localStorage.setItem('taskflow_habits', JSON.stringify(habits)); }
+  function saveJournal() { localStorage.setItem('taskflow_journal', JSON.stringify(journal)); }
+  function saveGoals() { localStorage.setItem('taskflow_goals', JSON.stringify(goals)); }
+
+  // ── Render Tab 1: Tasks ──
+  function renderTasks() {
     const total = tasks.length;
     const done  = tasks.filter(t => t.done).length;
     const active = total - done;
@@ -668,19 +1671,178 @@
     });
   }
 
+  // ── Render Tab 2: Daily Habits & Streaks ──
+  function renderHabits() {
+    const todayStr = getLocalDateStr();
+    const total = habits.length;
+    const completedToday = habits.filter(h => h.history.includes(todayStr)).length;
+    const pct = total ? Math.round((completedToday / total) * 100) : 0;
+    const perfectStreak = getPerfectDaysStreak().current;
+
+    document.getElementById('h-total').textContent = total;
+    document.getElementById('h-completed').textContent = completedToday;
+    document.getElementById('h-perfect-streak').textContent = perfectStreak;
+    document.getElementById('h-prog-fill').style.width = pct + '%';
+    document.getElementById('h-prog-pct').textContent = pct + '%';
+
+    const list = document.getElementById('habits-list');
+
+    if (habits.length === 0) {
+      const svgEmpty = `<svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 14px; display:block; opacity:0.5;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`;
+      list.innerHTML = `<div class="empty">${svgEmpty}<p><strong>No habits tracked yet</strong><br>Establish new habits above to start building your streak!</p></div>`;
+      return;
+    }
+
+    list.innerHTML = habits.map(h => {
+      const isDoneToday = h.history.includes(todayStr);
+      const streak = getHabitStreak(h.history);
+      const weeklyProgress = getWeeklyProgressHtml(h.history);
+
+      return `
+        <div class="habit-item">
+          <div class="habit-header">
+            <div class="habit-title-row">
+              <span class="habit-icon">${h.icon || '✨'}</span>
+              <span class="habit-text">${escHtml(h.text)}</span>
+            </div>
+            <div class="habit-streak-badge" title="Current streak / Max streak">
+              🔥 <span>${streak.current}d</span> <span style="font-size:10px; opacity:0.6; margin-left:3px;">(max ${streak.max}d)</span>
+            </div>
+          </div>
+          
+          ${weeklyProgress}
+          
+          <div class="habit-actions">
+            <button class="habit-tick-btn${isDoneToday ? ' done' : ''}" onclick="toggleHabitToday(${h.id})">
+              ${isDoneToday ? '✓ Completed Today' : 'Mark Completed Today'}
+            </button>
+            <button class="icon-btn" onclick="deleteHabit(${h.id})" aria-label="Delete habit" title="Delete" style="width:36px; height:36px;">
+              ${trashIcon}
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // ── Render Tab 3: Aesthetic Diary ──
+  function renderJournalTimeline() {
+    const timeline = document.getElementById('journal-timeline');
+    
+    if (journal.length === 0) {
+      const svgEmpty = `<svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 14px; display: block; opacity: 0.5;"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`;
+      timeline.innerHTML = `<div class="empty" style="grid-column: 1 / -1;">${svgEmpty}<p><strong>Your diary is empty</strong><br>Capture your feelings, ideas, or reflection for today above.</p></div>`;
+      return;
+    }
+
+    timeline.innerHTML = journal.map(j => `
+      <div class="journal-card jtheme-${j.theme || 'linen'} jfont-${j.font || 'sans'}">
+        <div class="journal-card-header">
+          <div class="journal-title-wrap">
+            <span class="journal-card-title">${escHtml(j.title)}</span>
+            <div class="journal-card-meta">${j.date}</div>
+          </div>
+          <button class="icon-btn" onclick="deleteJournalEntry(${j.id})" aria-label="Delete entry" title="Delete" style="color: inherit; opacity: 0.5;">
+            ${trashIcon}
+          </button>
+        </div>
+        <div class="journal-card-body">${escHtml(j.body)}</div>
+        <div class="journal-card-footer">
+          <span class="journal-card-mood">Mood: ${j.mood || '🙂'}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ── Render Tab 4: Long-Term Goals ──
+  function renderGoals() {
+    const list = document.getElementById('goals-list');
+
+    if (goals.length === 0) {
+      const svgEmpty = `<svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 14px; display: block; opacity: 0.5;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`;
+      list.innerHTML = `<div class="empty">${svgEmpty}<p><strong>No long-term goals established yet</strong><br>Define goals, plan daily roadmaps, and track your milestone progress!</p></div>`;
+      return;
+    }
+
+    list.innerHTML = goals.map(g => {
+      const totalMilestones = g.milestones.length;
+      const completedMilestones = g.milestones.filter(m => m.done).length;
+      const pct = totalMilestones ? Math.round((completedMilestones / totalMilestones) * 100) : 0;
+      const daysLeft = getDaysLeftStr(g.targetDate);
+
+      const milestonesHtml = g.milestones.map(m => `
+        <div class="goal-milestone-item${m.done ? ' done' : ''}">
+          <input type="checkbox" ${m.done ? 'checked' : ''} onclick="toggleMilestone(${g.id}, ${m.id})" style="accent-color: var(--accent); cursor: pointer;" />
+          <span>${escHtml(m.text)}</span>
+        </div>
+      `).join('');
+
+      const roadmapHtml = g.roadmap && g.roadmap.length > 0 ? `
+        <div class="goal-roadmap-section">
+          <div class="roadmap-title">🎯 Daily Actions roadmap</div>
+          <ul class="roadmap-list">
+            ${g.roadmap.map(item => `<li class="roadmap-item">${escHtml(item)}</li>`).join('')}
+          </ul>
+        </div>
+      ` : '';
+
+      return `
+        <div class="goal-card">
+          <div class="goal-card-header">
+            <div class="goal-title-wrap">
+              <span class="goal-title">${escHtml(g.title)}</span>
+              <div class="goal-days-left">${daysLeft}</div>
+            </div>
+            <button class="icon-btn" onclick="deleteGoal(${g.id})" aria-label="Delete goal" title="Delete">
+              ${trashIcon}
+            </button>
+          </div>
+
+          <div class="goal-progress-section">
+            <div class="goal-progress-meta">
+              <span>Milestones Progress</span>
+              <span>${completedMilestones}/${totalMilestones} (${pct}%)</span>
+            </div>
+            <div class="goal-progress-bar">
+              <div class="goal-progress-fill" style="width: ${pct}%"></div>
+            </div>
+          </div>
+
+          ${roadmapHtml}
+
+          <div class="goal-milestones">
+            <div class="field-label" style="margin-bottom: 2px;">Checkpoint Milestones</div>
+            ${milestonesHtml}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderAll() {
+    renderTasks();
+    renderHabits();
+    renderJournalTimeline();
+    renderGoals();
+  }
+
   function escHtml(s) {
+    if (!s) return '';
     return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
+  // ── Task Actions ──
   window.toggle = id => {
     const t = tasks.find(t => t.id === id);
     if (t) t.done = !t.done;
-    render();
+    saveTasks();
+    renderTasks();
   };
 
   window.del = id => {
     tasks = tasks.filter(t => t.id !== id);
-    render();
+    saveTasks();
+    renderTasks();
   };
 
   function addTask() {
@@ -688,15 +1850,258 @@
     const text = inp.value.trim();
     if (!text) { inp.focus(); return; }
     tasks.unshift({ id: nid++, text, done: false });
+    saveTasks();
     inp.value = '';
     if (filter === 'done') {
       document.querySelector('[data-filter="all"]').click();
     } else {
-      render();
+      renderTasks();
     }
     inp.focus();
   }
 
+  // ── Habit Actions ──
+  window.addHabit = () => {
+    const inp = document.getElementById('habit-name-input');
+    const iconSelect = document.getElementById('habit-icon-select');
+    const text = inp.value.trim();
+    
+    if (!text) {
+      inp.focus();
+      return;
+    }
+    
+    const icon = iconSelect.value;
+    habits.unshift({
+      id: Date.now(),
+      text,
+      history: [],
+      createdAt: new Date().toISOString(),
+      icon
+    });
+    
+    saveHabits();
+    inp.value = '';
+    renderHabits();
+    inp.focus();
+  };
+
+  window.toggleHabitToday = (id) => {
+    const habit = habits.find(h => h.id === id);
+    if (!habit) return;
+    
+    const today = getLocalDateStr();
+    const index = habit.history.indexOf(today);
+    
+    if (index > -1) {
+      habit.history.splice(index, 1);
+    } else {
+      habit.history.push(today);
+    }
+    
+    saveHabits();
+    renderHabits();
+  };
+
+  window.deleteHabit = (id) => {
+    if (confirm("Are you sure you want to delete this daily habit?")) {
+      habits = habits.filter(h => h.id !== id);
+      saveHabits();
+      renderHabits();
+    }
+  };
+
+  // ── Journal Actions ──
+  window.saveJournalEntry = () => {
+    const titleInput = document.getElementById('journal-title');
+    const bodyInput = document.getElementById('journal-body');
+    const title = titleInput.value.trim();
+    const body = bodyInput.value.trim();
+    
+    if (!body) {
+      alert("Please write a reflection body before logging your diary entry!");
+      bodyInput.focus();
+      return;
+    }
+    
+    const entry = {
+      id: Date.now(),
+      title: title || 'Reflective Thought',
+      body: body,
+      date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+      font: selectedJournalFont,
+      theme: selectedJournalTheme,
+      mood: selectedJournalMood
+    };
+    
+    journal.unshift(entry);
+    saveJournal();
+    renderJournalTimeline();
+    
+    // Reset editor title and body
+    titleInput.value = '';
+    bodyInput.value = '';
+    
+    // Smooth scroll to timeline
+    document.getElementById('journal-timeline').scrollIntoView({ behavior: 'smooth' });
+  };
+
+  window.deleteJournalEntry = (id) => {
+    if (confirm("Are you sure you want to delete this journal entry permanently?")) {
+      journal = journal.filter(j => j.id !== id);
+      saveJournal();
+      renderJournalTimeline();
+    }
+  };
+
+  // ── Long-Term Goals Actions ──
+  window.addLongTermGoal = () => {
+    const titleInp = document.getElementById('goal-title');
+    const dateInp = document.getElementById('goal-date');
+    const roadmapInp = document.getElementById('goal-roadmap');
+    const milestonesInp = document.getElementById('goal-milestones-input');
+    const autolinkCheck = document.getElementById('goal-autolink');
+    
+    const title = titleInp.value.trim();
+    const dateVal = dateInp.value;
+    const roadmapText = roadmapInp.value.trim();
+    const milestonesText = milestonesInp.value.trim();
+    
+    if (!title || !dateVal) {
+      alert("Please specify a goal target and set a completion deadline date.");
+      return;
+    }
+    
+    const roadmap = roadmapText ? roadmapText.split('\n').map(l => l.trim()).filter(l => l) : [];
+    const milestoneLines = milestonesText ? milestonesText.split('\n').map(l => l.trim()).filter(l => l) : [];
+    
+    const milestones = milestoneLines.map((m, idx) => ({
+      id: idx + 1,
+      text: m,
+      done: false
+    }));
+    
+    const isAutoLinked = autolinkCheck.checked;
+    const newGoal = {
+      id: Date.now(),
+      title,
+      targetDate: dateVal,
+      milestones,
+      roadmap,
+      autoLinked: isAutoLinked
+    };
+    
+    goals.unshift(newGoal);
+    saveGoals();
+    
+    if (isAutoLinked && roadmap.length > 0) {
+      roadmap.forEach((item, index) => {
+        let icon = '✨';
+        const itemLower = item.toLowerCase();
+        if (itemLower.includes('water') || itemLower.includes('drink')) icon = '💧';
+        else if (itemLower.includes('run') || itemLower.includes('walk') || itemLower.includes('cardio') || itemLower.includes('jog')) icon = '🏃';
+        else if (itemLower.includes('workout') || itemLower.includes('gym') || itemLower.includes('lift') || itemLower.includes('train') || itemLower.includes('exercise')) icon = '🏋️';
+        else if (itemLower.includes('eat') || itemLower.includes('protein') || itemLower.includes('diet') || itemLower.includes('meal') || itemLower.includes('food')) icon = '🍎';
+        else if (itemLower.includes('read') || itemLower.includes('book') || itemLower.includes('study') || itemLower.includes('write')) icon = '📖';
+        else if (itemLower.includes('sleep') || itemLower.includes('bed') || itemLower.includes('rest')) icon = '💤';
+        else if (itemLower.includes('meditate') || itemLower.includes('yoga') || itemLower.includes('breath')) icon = '🧘';
+        
+        habits.unshift({
+          id: Date.now() + index,
+          text: item,
+          history: [],
+          createdAt: new Date().toISOString(),
+          icon
+        });
+      });
+      saveHabits();
+      renderHabits();
+    }
+    
+    titleInp.value = '';
+    dateInp.value = '';
+    roadmapInp.value = '';
+    milestonesInp.value = '';
+    autolinkCheck.checked = true;
+    
+    renderGoals();
+  };
+
+  window.toggleMilestone = (goalId, milestoneId) => {
+    const goal = goals.find(g => g.id === goalId);
+    if (!goal) return;
+    
+    const ms = goal.milestones.find(m => m.id === milestoneId);
+    if (ms) {
+      ms.done = !ms.done;
+      saveGoals();
+      renderGoals();
+    }
+  };
+
+  window.deleteGoal = (id) => {
+    if (confirm("Are you sure you want to delete this long-term goal and roadmap?")) {
+      goals = goals.filter(g => g.id !== id);
+      saveGoals();
+      renderGoals();
+    }
+  };
+
+  // ── Tab Router Initialization ──
+  document.querySelectorAll('.nav-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.tab;
+      
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      
+      document.querySelectorAll('.tab-view').forEach(view => {
+        view.classList.remove('active');
+        view.style.display = 'none';
+      });
+      
+      const activeView = document.getElementById(`view-${target}`);
+      if (activeView) {
+        activeView.classList.add('active');
+        activeView.style.display = 'block';
+      }
+    });
+  });
+
+  // ── Journal Form Toolbar Event Listeners ──
+  document.querySelectorAll('.font-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.font-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedJournalFont = btn.dataset.font;
+      
+      const preview = document.getElementById('journal-editor-preview');
+      preview.classList.remove('jfont-sans', 'jfont-serif', 'jfont-hand', 'jfont-mono');
+      preview.classList.add(`jfont-${selectedJournalFont}`);
+    });
+  });
+
+  document.querySelectorAll('.theme-dot').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.theme-dot').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedJournalTheme = btn.dataset.theme;
+      
+      const preview = document.getElementById('journal-editor-preview');
+      preview.classList.remove('jtheme-linen', 'jtheme-sage', 'jtheme-lavender', 'jtheme-midnight', 'jtheme-sunset');
+      preview.classList.add(`jtheme-${selectedJournalTheme}`);
+    });
+  });
+
+  document.querySelectorAll('.mood-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedJournalMood = btn.dataset.mood;
+    });
+  });
+
+  // ── Event Listeners Hook ──
   document.getElementById('add-btn').addEventListener('click', addTask);
   document.getElementById('task-input').addEventListener('keydown', e => { if (e.key === 'Enter') addTask(); });
 
@@ -705,16 +2110,19 @@
       filter = btn.dataset.filter;
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      render();
+      renderTasks();
     });
   });
 
   document.getElementById('clear-btn').addEventListener('click', () => {
     tasks = tasks.filter(t => !t.done);
-    render();
+    saveTasks();
+    renderTasks();
   });
 
-  render();
+  // ── Init execution ──
+  loadState();
+  renderAll();
 </script>
 </body>
 </html>
